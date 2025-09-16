@@ -1,0 +1,22 @@
+specVersion: "3.1"
+metadata:
+  name: zcebyclerk
+type: application
+builder:
+  resources:
+    excludes:
+      - /test/**
+      - /localService/**
+  customTasks:
+    - name: deploy-to-abap
+      afterTask: generateCachebusterInfo
+      configuration:
+        target:
+          url: https://my413862.s4hana.cloud.sap/
+          authenticationType: reentranceTicket
+        app:
+          name: ZCEBY_CLERK
+          package: ZCEBY_IV_CONSUMPTION
+          transport: K0BK900173
+        exclude:
+          - /test/

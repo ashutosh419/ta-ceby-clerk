@@ -1,0 +1,11 @@
+<core:FragmentDefinition xmlns:core="sap.ui.core"
+	xmlns="sap.m"
+	xmlns:macros="sap.fe.macros">
+	<VBox core:require="{ handler: 'zcebyclerk/ext/fragment/Notes'}">
+		<!-- <Button text="Notes" press="handler.onPress" /> -->
+		<FeedInput post="handler.onPress" class="sapUiSmallMarginTopBottom" maxLength="50" />
+		<List showSeparators="Inner" items="{_Notes}">
+			<FeedListItem sender="{CrUser}" timestamp="{CrTimestamp}" text="{TextDesc}" convertLinksToAnchorTags="All"/>
+		</List>
+	</VBox>
+</core:FragmentDefinition>
