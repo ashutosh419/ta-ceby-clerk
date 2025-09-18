@@ -193,6 +193,18 @@
           }
         }
       }
+    },
+    "extends": {
+      "extensions": {
+        "sap.ui.controllerExtensions": {
+          "sap.fe.templates.ListReport.ListReportController": {
+            "controllerName": "zcebyclerk.ext.controller.ListReportExtension"
+          },
+          "sap.fe.templates.ObjectPage.ObjectPageController#zcebyclerk::HeaderObjectPage": {
+            "controllerName": "zcebyclerk.ext.controller.HeaderObjectPage"
+          }
+        }
+      }
     }
   },
   "sap.fiori": {
