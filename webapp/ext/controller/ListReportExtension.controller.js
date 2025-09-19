@@ -22,10 +22,16 @@ sap.ui.define(
               oModel.attachEventOnce("dataReceived", async () => {
                 const sTable =
                   "zcebyclerk::HeaderList--fe::table::Header::LineItem::Table";
-                const oListBinding = oView.byId(sTable).getRowBinding();
+                const oTable = oView.byId(sTable);
+                if (!oTable) {
+                  return;
+                }
+                const oMDCTable = oTable.getMDCTable();
+                const oListBinding = oTable.getRowBinding();
                 let oFirstRow;
 
-                // Fetch the First Row of Header
+                oTable.setBusyIndicatorDelay(0).setBusy(true);
+                // Fetch the First Row of Header with FC fields
                 const aContexts = oListBinding.getContexts();
                 if (aContexts.length > 0) {
                   oFirstRow = await oModel
@@ -33,7 +39,7 @@ sap.ui.define(
                     .requestObject();
                 }
                 // Setting Column Visibility
-                const oMDCTable = oView.byId(sTable).getMDCTable();
+
                 const aColumns = oMDCTable.getColumns();
                 aColumns.forEach((oColumn, i) => {
                   const sProperty = oColumn.getPropertyKey();
@@ -41,9 +47,17 @@ sap.ui.define(
                     const bHidden = oFirstRow[sProperty + "_fc_wl"];
                     if (bHidden) {
                       oMDCTable.removeColumn(oColumn);
+                    } else {
+                      // Not to be hidden
+                      // Check for Label Change
+                      const sLabel = oFirstRow[sProperty + "_label_wl"];
+                      if (sLabel && sLabel.length > 0) {
+                        oColumn.setHeader(sLabel);
+                      }
                     }
                   }
                 });
+                oTable.setBusy(false);
               });
             }
           },

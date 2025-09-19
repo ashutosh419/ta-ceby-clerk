@@ -130,7 +130,7 @@
           "options": {
             "settings": {
               "contextPath": "/Header",
-              "variantManagement": "Page",
+              "variantManagement": "Control",
               "navigation": {
                 "Header": {
                   "detail": {
