@@ -176,6 +176,17 @@
                       "title": "Notes"
                     }
                   }
+                },
+                "header": {
+                  "actions": {
+                    "wfSend": {
+                      "press": "zcebyclerk.ext.controller.customAction.openSendToWorkflow",
+                      "visible": true,
+                      "enabled": true,
+                      "requiresSelection": false,
+                      "text": "Workflow Send Document"
+                    }
+                  }
                 }
               }
             }
