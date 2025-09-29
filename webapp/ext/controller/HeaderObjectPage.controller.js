@@ -16,7 +16,49 @@ sap.ui.define(
           onBeforeRendering: function () {
             // you can access the Fiori elements extensionAPI via this.base.getExtensionAPI
             // able - zcebyclerk::HeaderObjectPage--fe::table::_Taxes::LineItem::Taxes-innerTable
-            var oModel = this.base.getExtensionAPI().getModel();
+            let oView = this.base.getView();
+            let oModel = oView.getModel();
+            let oHeaderData;
+            if (oModel) {
+              oModel.attachEventOnce("dataReceived", async (oEvent) => {
+                // Fetch Invoice Facet
+
+                let oInvoiceFacet = oView.byId(
+                  "zcebyclerk::HeaderObjectPage--fe::FormContainer::InvoiceFacet"
+                );
+                let oContext = oEvent.getSource().getContext();
+                if (oContext) {
+                  oHeaderData = await oModel
+                    .bindContext(oContext.getPath())
+                    .requestObject();
+                }
+
+                if (oInvoiceFacet && oHeaderData) {
+                  let aFormElements = oInvoiceFacet.getFormElements();
+                  aFormElements.forEach((oFormElement) => {
+                    if (oFormElement) {
+                      let aFields = oFormElement.getFields();
+                      if (aFields.length > 0) {
+                        let oFirstField = aFields[0];
+                        if (oFirstField) {
+                          let sMainPropertyRelativePath =
+                            oFirstField.getMainPropertyRelativePath();
+                          // UPdate Label from Property + '_label_wd' field
+
+                          const sLabel =
+                            oHeaderData[
+                              sMainPropertyRelativePath + "_label_wd"
+                            ];
+                          if (sLabel && sLabel.length > 0) {
+                            oFormElement.setLabel(sLabel);
+                          }
+                        }
+                      }
+                    }
+                  });
+                }
+              });
+            }
           },
         },
       }
