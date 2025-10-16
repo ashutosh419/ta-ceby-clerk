@@ -39,24 +39,25 @@ sap.ui.define(
                     .requestObject();
                 }
                 // Setting Column Visibility
-
-                const aColumns = oMDCTable.getColumns();
-                aColumns.forEach((oColumn, i) => {
-                  const sProperty = oColumn.getPropertyKey();
-                  if (sProperty.length > 0) {
-                    const bHidden = oFirstRow[sProperty + "_fc_wl"];
-                    if (bHidden) {
-                      oMDCTable.removeColumn(oColumn);
-                    } else {
-                      // Not to be hidden
-                      // Check for Label Change
-                      const sLabel = oFirstRow[sProperty + "_label_wl"];
-                      if (sLabel && sLabel.length > 0) {
-                        oColumn.setHeader(sLabel);
+                if (oFirstRow) {
+                  const aColumns = oMDCTable.getColumns();
+                  aColumns.forEach((oColumn, i) => {
+                    const sProperty = oColumn.getPropertyKey();
+                    if (sProperty.length > 0) {
+                      const bHidden = oFirstRow[sProperty + "_fc_wl"];
+                      if (bHidden) {
+                        oMDCTable.removeColumn(oColumn);
+                      } else {
+                        // Not to be hidden
+                        // Check for Label Change
+                        const sLabel = oFirstRow[sProperty + "_label_wl"];
+                        if (sLabel && sLabel.length > 0) {
+                          oColumn.setHeader(sLabel);
+                        }
                       }
                     }
-                  }
-                });
+                  });
+                }
                 oTable.setBusy(false);
               });
             }
