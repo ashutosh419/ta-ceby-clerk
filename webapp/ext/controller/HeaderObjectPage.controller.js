@@ -19,6 +19,23 @@ sap.ui.define(
             let oView = this.base.getView();
             let oModel = oView.getModel();
             let oHeaderData;
+
+            //Start of change to manage visibility of Workflow button based on Status
+            const fnUpdate = async () => {
+              const oCtx = oView.getBindingContext();
+              if (oCtx) {
+                const oData = await oCtx.requestObject();
+                const oBtn = oView.byId("zcebyclerk::HeaderObjectPage--fe::CustomAction::wfSend");
+                if (oBtn) {
+                  const aHiddenStatuses = ["06", "07", "08"];
+                  oBtn.setVisible(!aHiddenStatuses.includes(oData.Status));
+                }
+              }
+            };
+
+            oView.attachModelContextChange(fnUpdate);
+            //End of change to manage visibility of Workflow button based on Status
+
             if (oModel) {
               oModel.attachEventOnce("dataReceived", async (oEvent) => {
                 // Fetch Invoice Facet
@@ -47,7 +64,7 @@ sap.ui.define(
 
                           const sLabel =
                             oHeaderData[
-                              sMainPropertyRelativePath + "_label_wd"
+                            sMainPropertyRelativePath + "_label_wd"
                             ];
                           if (sLabel && sLabel.length > 0) {
                             oFormElement.setLabel(sLabel);

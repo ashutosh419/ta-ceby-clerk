@@ -5,6 +5,7 @@ sap.ui.define([
     'use strict';
     var oWFDialog;
     return {
+        //zcebyclerk::HeaderObjectPage--fe::CustomAction::wfSend  => ID of the action button
         openSendToWorkflow: function (oEvent) {
             var oView = this.getRouting().getView();
             var oModel = this.getModel()
@@ -35,7 +36,7 @@ sap.ui.define([
                 );
                 return;
             }
-
+            var oModel = oContext.getModel();
             const oAction = oContext
                 .getModel()
                 .bindContext(
@@ -76,6 +77,8 @@ sap.ui.define([
 
             oAction.invoke().then(function (oResult) {
                 sap.m.MessageToast.show("Workflow sent successfully!");
+                oView.byId("zcebyclerk::HeaderObjectPage--fe::CustomAction::wfSend").setVisible(false);
+                oContext.refresh(); 
             }).catch(function (oError) {
                 console.log(oError.message);
                 sap.m.MessageBox.error("Error sending workflow: " + oError.message);
@@ -159,7 +162,6 @@ sap.ui.define([
             });
         },
         onStepSelectionChange: function (oEvent) {
-
             var oView = this.getRouting().getView();
             var oSelectedItem = oEvent.getParameter("listItem");
             var oContext = oSelectedItem.getBindingContext("stepsModel");
@@ -167,11 +169,9 @@ sap.ui.define([
             oView.byId("workflowReceiversTable").setModel(new sap.ui.model.json.JSONModel({ Receiver: aReceivers }), "receiversModel");
         },
         onAddReceiver: function () {
-
             var oView = this.getRouting().getView();
             var oReceiversTable = oView.byId("workflowReceiversTable");
             oReceiversTable.addItem();
-        },
-
+        }
     };
 });
